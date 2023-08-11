@@ -6,6 +6,7 @@ package com.pxu.dao;
  */
 import com.phuxuan.quanlyktx.connectJDBC.Databaseee;
 import com.pxu.model.StudentModel;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.sql.rowset.serial.SerialBlob;
 
 /**
  *
@@ -56,7 +58,7 @@ public class StudentDao {
     public boolean insert(StudentModel s) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO student (student_id,student_name,faculty,major,birth_date,id_card,phone_number,"
                 + " gender,hometown,room_id,violation_count,"
-                + " check_in_date,status) VALUES (?,?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
+                + " check_in_date,status,student_image) VALUES (?,?, ?, ?, ?, ?,?,?,?,?,?,?,?,?)";
         try (Connection conn = Databaseee.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getStudent_id());
             prstt.setString(2, s.getStudent_name());
@@ -71,6 +73,13 @@ public class StudentDao {
             prstt.setInt(11, s.getViolation_count());
             prstt.setDate(12, s.getCheck_in_date());
             prstt.setString(13, s.getStatus());
+            if (s.getStudent_image() != null) {
+                Blob hinh = new SerialBlob(s.getStudent_image());
+                prstt.setBlob(14, hinh);
+            } else {
+                Blob hinh = null;
+                prstt.setBlob(14, hinh);
+            }
             return prstt.executeUpdate() > 0;
         }
     }

@@ -4,6 +4,7 @@ package com.pxu.model;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+import java.sql.Blob;
 import java.sql.Date;
 
 /**
@@ -15,11 +16,12 @@ public class StudentModel {
     private String student_id, student_name, faculty, major, id_card, phone_number, room_id, gender, hometown, status;
     private int violation_count;
     private Date check_in_date, birth_date;
+    private byte[] student_image;
 
     public StudentModel() {
     }
 
-    public StudentModel(String student_id, String student_name, String faculty, String major, String id_card, String phone_number, String room_id, String gender, String hometown, String status, int violation_count, Date check_in_date, Date birth_date) {
+    public StudentModel(String student_id, String student_name, String faculty, String major, String id_card, String phone_number, String room_id, String gender, String hometown, String status, int violation_count, Date check_in_date, Date birth_date, byte[] student_image) {
         this.student_id = student_id;
         this.student_name = student_name;
         this.faculty = faculty;
@@ -33,6 +35,7 @@ public class StudentModel {
         this.violation_count = violation_count;
         this.check_in_date = check_in_date;
         this.birth_date = birth_date;
+        this.student_image = student_image;
     }
 
     public String getStudent_id() {
@@ -139,4 +142,15 @@ public class StudentModel {
         this.birth_date = birth_date;
     }
 
+    public byte[] getStudent_image() {
+        return student_image;
+    }
+
+    public void setStudent_image(byte[] student_image) {
+        this.student_image = student_image;
+    }
+
+   
+
+   
 }

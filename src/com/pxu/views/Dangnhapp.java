@@ -4,9 +4,9 @@
  */
 package com.pxu.views;
 
-import Dialogchek.KIEMTRANGUOIDUNGHELPER;
-import Dialogchek.MessageHerr;
-import Dialogchek.sheardatta;
+import com.pxu.dialogchek.KIEMTRANGUOIDUNGHELPER;
+import com.pxu.dialogchek.MessageHerr;
+import com.pxu.dialogchek.sheardatta;
 import com.pxu.dao.UserDao;
 import com.pxu.model.UserModel;
 

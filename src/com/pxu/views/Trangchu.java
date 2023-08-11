@@ -4,7 +4,8 @@
  */
 package com.pxu.views;
 
-import Dialogchek.sheardatta;
+import com.pxu.dialogchek.ImageHelperR;
+import com.pxu.dialogchek.sheardatta;
 import com.phuxuan.quanlyktx.connectJDBC.Databaseee;
 import com.pxu.dao.CheckoutDao;
 import com.pxu.dao.StudentDao;
@@ -17,11 +18,14 @@ import com.pxu.model.RoomtransferModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -32,12 +36,15 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,6 +52,8 @@ import javax.swing.table.DefaultTableModel;
  * @author chinh
  */
 public class Trangchu extends javax.swing.JFrame implements MouseListener {
+    
+    private byte[] resonalImage;
 
     /**
      * Creates new form Trangchu
@@ -58,21 +67,20 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         rightmouse();
         loadcombomaphong();
     }
-
+    
     private void pro() {
         txtmand.setText(sheardatta.nguoiDangNhap.getFull_name());
         txtvaitro.setText(sheardatta.nguoiDangNhap.getPosition());
         if (sheardatta.nguoiDangNhap.getPosition().equals("Quản lý")) {
-
+            
         } else if (sheardatta.nguoiDangNhap.getPosition().equals("Nhân viên")) {
             jButton1.setEnabled(false);
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jButton7.setEnabled(false);
-            jButton8.setEnabled(false);
         }
     }
-
+    
     private void rightmouse() {
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
@@ -98,15 +106,15 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             }
         });
     }
-
+    
     private void showdate() {
         java.util.Date d = new java.util.Date();
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         String dat = s.format(d);
         lbtDate.setText(dat);
-
+        
     }
-
+    
     private void showTime() {
         new Timer(0, new ActionListener() {
             @Override
@@ -118,22 +126,22 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             }
         }).start();
     }
-
+    
     private void taophong() {
         try {
             Connection connection = Databaseee.getConnection();
             Statement statement = connection.createStatement();
             String sql = "select * from room";
             ResultSet resultSet = statement.executeQuery(sql);
-
+            
             while (resultSet.next()) {
                 createRoomPanel(resultSet);
             }
-
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
+        
         pack();
         setLocationRelativeTo(null);
     }
@@ -158,8 +166,9 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             // Add the panel to the main panel
             addRoomToMainPanel(panel);
         } catch (SQLException ex) {
-            Logger.getLogger(Quantri.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
 // Add this method to create the context menu
@@ -197,7 +206,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         popup.add(xoaphong);
         return popup;
     }
-
+    
     private JPanel createBasicRoomPanel(ResultSet resultSet) throws SQLException {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 1, 6, 3));
@@ -208,7 +217,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         panel.setBackground(backgroundColor);
         return panel;
     }
-
+    
     private void setRoomDetails(ResultSet resultSet, JPanel panel) {
         try {
             String maphong = resultSet.getString("room_id");
@@ -221,32 +230,32 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             JLabel label3 = createLabel("Loại phòng: " + String.valueOf(loaiphong));
             JLabel label4 = createLabel("Số giường: " + String.valueOf(songiuong));
             panel.addMouseListener(this);
-
+            
             panel.add(label1);
             panel.add(label2);
             panel.add(label3);
             panel.add(label4);
-
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
-
+    
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("", Font.BOLD, 13));
         label.setForeground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
-
+        
         return label;
     }
-
+    
     private void addRoomToMainPanel(JPanel roomPanel) {
         jPanel2.add(roomPanel);
-
+        
     }
-
+    
     private void reloadRoomStatus() {
         jPanel2.removeAll(); // Xóa các phòng hiện tại trên giao diện
         try {
@@ -254,21 +263,21 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM room";
             ResultSet resultSet = statement.executeQuery(sql);
-
+            
             while (resultSet.next()) {
                 createRoomPanel(resultSet);
             }
-
+            
             statement.close();
             connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
+        
         jPanel2.revalidate(); // Cập nhật giao diện sau khi thêm lại các phòng
         jPanel2.repaint();
     }
-
+    
     private void capnhatsonguoiphongmoi() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + txtmp.getText() + "'";
@@ -284,7 +293,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             ex.printStackTrace();
         }
     }
-
+    
     private void loadcombomaphong() throws SQLException {
         String sql = "select room_id from room";
         Connection conn = Databaseee.getConnection();
@@ -297,7 +306,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         conn.close();
         stmt.close();
     }
-
+    
     private boolean chekngayvao() {
         try {
             String sqlsqlc = "select * from student where student_id=N'" + txtmasv1.getText() + "'";
@@ -315,7 +324,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         }
         return false;
     }
-
+    
     private boolean checksonguoiophongmoi() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + combomap.getSelectedItem() + "'";
@@ -334,7 +343,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         }
         return false;
     }
-
+    
     private void capnhatsonguoiphongcu() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + txtmp.getText() + "'";
@@ -350,7 +359,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             ex.printStackTrace();
         }
     }
-
+    
     private void capnhatsonguoiphongmoiii() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + combomap.getSelectedItem() + "'";
@@ -384,28 +393,46 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         txtmp = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jPanel19 = new javax.swing.JPanel();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        jPanel21 = new javax.swing.JPanel();
+        jButton13 = new javax.swing.JButton();
+        jPanel22 = new javax.swing.JPanel();
+        jlableanh = new javax.swing.JLabel();
+        jPanel23 = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         txtmasv = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txthoten = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         combokhoa = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         combonganh = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         datengaysinh = new com.toedter.calendar.JDateChooser();
+        jPanel26 = new javax.swing.JPanel();
+        jPanel27 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        txtcmnd = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
         txtsdt = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        comgioitinh = new javax.swing.JComboBox<>();
-        jLabel15 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         txtquequan = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        comgioitinh = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        txtcmnd = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         datengayvao = new com.toedter.calendar.JDateChooser();
-        jButton8 = new javax.swing.JButton();
         jFrame3 = new javax.swing.JFrame();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
@@ -501,8 +528,8 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         jFrame2.getContentPane().add(jPanel11, java.awt.BorderLayout.CENTER);
 
         jFrame1.setTitle("Thuê phòng");
-        jFrame1.setLocation(new java.awt.Point(500, 100));
-        jFrame1.setMinimumSize(new java.awt.Dimension(440, 545));
+        jFrame1.setLocation(new java.awt.Point(300, 100));
+        jFrame1.setMinimumSize(new java.awt.Dimension(1000, 545));
 
         jPanel9.setBackground(new java.awt.Color(204, 0, 204));
         jPanel9.setLayout(new java.awt.BorderLayout());
@@ -513,74 +540,180 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         txtmp.setText("0");
         jPanel9.add(txtmp, java.awt.BorderLayout.CENTER);
 
-        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), "Thông tin sinh viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanel10.setLayout(new java.awt.GridLayout(10, 0, 0, 10));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thêm thông tin sinh viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jPanel6.setLayout(new java.awt.CardLayout());
+
+        jPanel16.setLayout(new java.awt.GridLayout());
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 447, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 123, Short.MAX_VALUE)
+        );
+
+        jPanel16.add(jPanel17);
+
+        jPanel18.setLayout(new java.awt.CardLayout(50, 35));
+
+        jPanel19.setLayout(new java.awt.GridLayout(1, 20, 20, 10));
+
+        jButton11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton11.setText("Huỷ");
+        jButton11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        jPanel19.add(jButton11);
+
+        jButton12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton12.setText("Xác nhận");
+        jButton12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+        jPanel19.add(jButton12);
+
+        jPanel18.add(jPanel19, "card2");
+
+        jPanel16.add(jPanel18);
+
+        jPanel6.add(jPanel16, "card2");
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.PAGE_END);
+
+        jPanel7.setLayout(new java.awt.GridLayout());
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jPanel20.setLayout(new java.awt.CardLayout());
+
+        jPanel21.setLayout(new java.awt.BorderLayout());
+
+        jButton13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton13.setText("Ảnh");
+        jButton13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+        jPanel21.add(jButton13, java.awt.BorderLayout.CENTER);
+
+        jPanel20.add(jPanel21, "card2");
+
+        jPanel10.add(jPanel20, java.awt.BorderLayout.PAGE_END);
+
+        jPanel22.setLayout(new java.awt.BorderLayout());
+        jPanel22.add(jlableanh, java.awt.BorderLayout.CENTER);
+
+        jPanel10.add(jPanel22, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel10);
+
+        jPanel23.setLayout(new java.awt.CardLayout(10, 0));
+
+        jPanel24.setLayout(new java.awt.GridLayout(5, 0, 0, 40));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Mã sinh viên:");
-        jPanel10.add(jLabel7);
-        jPanel10.add(txtmasv);
+        jPanel24.add(jLabel7);
+        jPanel24.add(txtmasv);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Họ tên sinh viên:");
-        jPanel10.add(jLabel8);
-        jPanel10.add(txthoten);
+        jPanel24.add(jLabel8);
+        jPanel24.add(txthoten);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setText("Khoa:");
-        jPanel10.add(jLabel9);
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel11.setText("Khoa:");
+        jPanel24.add(jLabel11);
 
         combokhoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CN-KD" }));
-        jPanel10.add(combokhoa);
+        jPanel24.add(combokhoa);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel10.setText("Ngành:");
-        jPanel10.add(jLabel10);
+        jPanel24.add(jLabel10);
 
         combonganh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CNTT", "QT-KD" }));
-        jPanel10.add(combonganh);
+        jPanel24.add(combonganh);
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel11.setText("Ngày sinh:");
-        jPanel10.add(jLabel11);
-        jPanel10.add(datengaysinh);
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel9.setText("Ngày sinh:");
+        jPanel24.add(jLabel9);
+        jPanel24.add(datengaysinh);
+
+        jPanel23.add(jPanel24, "card2");
+
+        jPanel7.add(jPanel23);
+
+        jPanel26.setLayout(new java.awt.CardLayout(10, 0));
+
+        jPanel27.setLayout(new java.awt.GridLayout(5, 0, 0, 40));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel12.setText("Cmnd:");
-        jPanel10.add(jLabel12);
-        jPanel10.add(txtcmnd);
+        jLabel12.setText("SĐT:");
+        jPanel27.add(jLabel12);
+        jPanel27.add(txtsdt);
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel13.setText("SĐT:");
-        jPanel10.add(jLabel13);
-        jPanel10.add(txtsdt);
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel14.setText("Gioi tính:");
-        jPanel10.add(jLabel14);
-
-        comgioitinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
-        jPanel10.add(comgioitinh);
+        jLabel13.setText("Địa chỉ:");
+        jPanel27.add(jLabel13);
+        jPanel27.add(txtquequan);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel15.setText("Quê quán:");
-        jPanel10.add(jLabel15);
-        jPanel10.add(txtquequan);
+        jLabel15.setText("Gioi tính:");
+        jPanel27.add(jLabel15);
+
+        comgioitinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
+        jPanel27.add(comgioitinh);
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel14.setText("CMND:");
+        jPanel27.add(jLabel14);
+        jPanel27.add(txtcmnd);
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setText("Ngày vào:");
-        jPanel10.add(jLabel16);
-        jPanel10.add(datengayvao);
+        jPanel27.add(jLabel16);
+        jPanel27.add(datengayvao);
 
-        jButton8.setBackground(new java.awt.Color(51, 255, 51));
-        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("Thuê phòng");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
+        jPanel26.add(jPanel27, "card2");
+
+        jPanel7.add(jPanel26);
+
+        jPanel5.add(jPanel7, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 916, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 904, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 508, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)))
+        );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -588,21 +721,16 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton8)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton8)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jFrame1.getContentPane().add(jPanel8, java.awt.BorderLayout.CENTER);
@@ -969,64 +1097,6 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         }
         return false;
     }
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        if (chek()) {
-            try {
-                StringBuilder sb = new StringBuilder();
-                if (sb.length() > 0) {
-                    JOptionPane.showMessageDialog(rootPane, sb);
-                    return;
-                }
-                /// thêm sinh viên
-                StudentModel s = new StudentModel();
-                s.setStudent_id(txtmasv.getText());
-                s.setStudent_name(txthoten.getText());
-                s.setFaculty(combokhoa.getSelectedItem().toString());
-                s.setMajor(combonganh.getSelectedItem().toString());
-                SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
-                String ngaysinh = date.format(datengaysinh.getDate());
-                s.setBirth_date(Date.valueOf(ngaysinh));
-                s.setId_card(txtcmnd.getText());
-                s.setPhone_number(txtsdt.getText());
-                s.setGender(comgioitinh.getSelectedItem().toString());
-                s.setHometown(txtquequan.getText());
-                s.setRoom_id(txtmp.getText());
-                s.setViolation_count(0);
-                String ngayvao = date.format(datengayvao.getDate());
-                s.setCheck_in_date(Date.valueOf(ngayvao));
-                s.setStatus("ĐANG THUÊ");
-                StudentDao dao = new StudentDao();
-                dao.insert(s);
-                /// thêm vào hóa đơn thuê phòng
-                String sql = "select * from user where full_name=N'" + txtmand.getText() + "'";
-                Connection conn = Databaseee.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    RoomrentalModel t = new RoomrentalModel();
-                    t.setStudent_id(txtmasv.getText());
-                    t.setUser_id(rs.getString("user_id"));
-                    t.setRoom_id(txtmp.getText());
-                    String ngaythue = date.format(datengayvao.getDate());
-                    t.setRental_date(Date.valueOf(ngaythue));
-                    t.setStatus("ĐANG THUÊ");
-                    RoomrentalDao daoo = new RoomrentalDao();
-                    daoo.insert(t);
-                    ///Cập nhật số người ở phòng mới
-                    capnhatsonguoiphongmoi();
-                    JOptionPane.showMessageDialog(rootPane, "Thuê Phòng thành công !!!");
-                }
-                reloadRoomStatus();
-            } catch (SQLException ex) {
-                Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-        }
-        jFrame1.dispose();
-    }//GEN-LAST:event_jButton8ActionPerformed
-
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         if (checksonguoiophongmoi()) {
             if (chekngayvao()) {
@@ -1068,7 +1138,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
+            
         } else {
         }
         jFrame3.dispose();
@@ -1111,6 +1181,119 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         }
         jFrame4.dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
+    private boolean checkmasv() {
+        try {
+            Connection conn = Databaseee.getConnection();
+            Statement stmt = conn.createStatement();
+            String sql = "select * from STUDENT";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                if (rs.getString("student_id").toString().trim().equals(txtmasv.getText())) {
+                    jFrame1.setVisible(true);
+                    JOptionPane.showMessageDialog(rootPane, "Mã sinh viên đã tồn tại !!!");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        if (checkmasv()) {
+            if (chek()) {
+                try {
+                    StringBuilder sb = new StringBuilder();
+                    if (sb.length() > 0) {
+                        JOptionPane.showMessageDialog(rootPane, sb);
+                        return;
+                    }
+                    /// thêm sinh viên
+                    StudentModel s = new StudentModel();
+                    s.setStudent_id(txtmasv.getText());
+                    s.setStudent_name(txthoten.getText());
+                    s.setFaculty(combokhoa.getSelectedItem().toString());
+                    s.setMajor(combonganh.getSelectedItem().toString());
+                    SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
+                    String ngaysinh = date.format(datengaysinh.getDate());
+                    s.setBirth_date(Date.valueOf(ngaysinh));
+                    s.setId_card(txtcmnd.getText());
+                    s.setPhone_number(txtsdt.getText());
+                    s.setGender(comgioitinh.getSelectedItem().toString());
+                    s.setHometown(txtquequan.getText());
+                    s.setRoom_id(txtmp.getText());
+                    s.setViolation_count(0);
+                    String ngayvao = date.format(datengayvao.getDate());
+                    s.setCheck_in_date(Date.valueOf(ngayvao));
+                    s.setStatus("ĐANG THUÊ");
+                    s.setStudent_image(resonalImage);
+                    StudentDao dao = new StudentDao();
+                    dao.insert(s);
+                    /// thêm vào hóa đơn thuê phòng
+                    String sql = "select * from user where full_name=N'" + txtmand.getText() + "'";
+                    Connection conn = Databaseee.getConnection();
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        RoomrentalModel t = new RoomrentalModel();
+                        t.setStudent_id(txtmasv.getText());
+                        t.setUser_id(rs.getString("user_id"));
+                        t.setRoom_id(txtmp.getText());
+                        String ngaythue = date.format(datengayvao.getDate());
+                        t.setRental_date(Date.valueOf(ngaythue));
+                        t.setStatus("ĐANG THUÊ");
+                        RoomrentalDao daoo = new RoomrentalDao();
+                        daoo.insert(t);
+                        ///Cập nhật số người ở phòng mới
+                        capnhatsonguoiphongmoi();
+                        JOptionPane.showMessageDialog(rootPane, "Thuê Phòng thành công !!!");
+                    }
+                    reloadRoomStatus();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        jFrame1.dispose();
+
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".jpg");
+                }
+            }
+            
+            @Override
+            public String getDescription() {
+                return "Image File (*.jpg)";
+            }
+        });
+        if (chooser.showOpenDialog(rootPane) == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+        File file = chooser.getSelectedFile();
+        try {
+            ImageIcon icon = new ImageIcon(file.getPath());
+            Image img = ImageHelperR.resize(icon.getImage(), 313, 271);
+            ImageIcon resizeIcon = new ImageIcon(img);
+            jlableanh.setIcon(resizeIcon);
+            resonalImage = ImageHelperR.toByteArray(img, "jpg");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(rootPane, "looix");
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        jFrame1.dispose();
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1162,13 +1345,15 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
     private com.toedter.calendar.JDateChooser datengayvao;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -1214,8 +1399,23 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private java.awt.Panel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1232,6 +1432,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JToolBar.Separator jSeparator9;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel jlableanh;
     private javax.swing.JLabel lblTime;
     private javax.swing.JLabel lbtDate;
     private javax.swing.JTextPane lydo;
@@ -1270,7 +1471,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         } catch (SQLException e) {
         }
     }
-
+    
     @Override
     public void mouseClicked(MouseEvent e) {
         try {
@@ -1288,21 +1489,21 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             ex.printStackTrace();
         }
     }
-
+    
     @Override
     public void mousePressed(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseEntered(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseExited(MouseEvent e) {
     }
-
+    
 }
