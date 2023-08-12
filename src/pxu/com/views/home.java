@@ -66,6 +66,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
         showdate();
         rightmouse();
         loadcombomaphong();
+//        this.setSize(1320, 750);
+//        this.setLocationRelativeTo(null);
     }
 
     private void pro() {
@@ -474,14 +476,12 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jSeparator9 = new javax.swing.JToolBar.Separator();
         jPanel25 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         txtmand = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         lbtDate = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         txtvaitro = new javax.swing.JLabel();
@@ -871,64 +871,63 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jToolBar1.setRollover(true);
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/kytucxa.png"))); // NOI18N
         jButton1.setText("Phòng");
         jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator2);
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/sinhivnektx.png"))); // NOI18N
         jButton2.setText("Sinh viên");
         jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator3);
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/kyluiat.png"))); // NOI18N
         jButton3.setText("Kỷ luật");
         jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton3);
         jToolBar1.add(jSeparator4);
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/nhaxe.png"))); // NOI18N
         jButton4.setText("Nhà xe");
         jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator5);
 
         jButton5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/taikhoan.png"))); // NOI18N
         jButton5.setText("Tài khoản");
         jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton5);
         jToolBar1.add(jSeparator7);
 
         jButton6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/hoadon.png"))); // NOI18N
         jButton6.setText("Hoá đơn");
         jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton6);
         jToolBar1.add(jSeparator8);
 
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/thongke.png"))); // NOI18N
         jButton7.setText("Thống kê");
         jButton7.setFocusable(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(jButton7);
         jToolBar1.add(jSeparator9);
 
         jPanel25.setLayout(new java.awt.GridLayout(2, 0));
         jPanel25.add(jLabel1);
-        jPanel25.add(jLabel5);
         jPanel25.add(jLabel3);
 
         jLabel36.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -949,7 +948,6 @@ public class home extends javax.swing.JFrame implements MouseListener {
         lbtDate.setText("jLabel39");
         jPanel25.add(lbtDate);
         jPanel25.add(jLabel2);
-        jPanel25.add(jLabel4);
         jPanel25.add(jLabel6);
 
         jLabel38.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -980,9 +978,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1526, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(scrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1526, Short.MAX_VALUE))
+                .addComponent(scrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1378,10 +1376,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
