@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.pxu.dialogchek;
+package pxu.com.dialogchek;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author chinh
  */
-public class ImageHelperR {
+public class imageheiper {
      public static Image resize(Image originalImage, int targetWidth, int targetHeight){
         Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
         return resultingImage;

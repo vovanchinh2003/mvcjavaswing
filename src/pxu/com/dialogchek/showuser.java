@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.pxu.dialogchek;
+package pxu.com.dialogchek;
 
-import com.pxu.model.UserModel;
+import pxu.com.model.UserModel;
 
 
 /**
  *
  * @author chinh //
  */
-public class sheardatta {
+public class showuser {
 
     public static UserModel nguoiDangNhap;
 

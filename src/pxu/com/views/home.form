@@ -340,9 +340,7 @@
                         </Container>
                         <Container class="javax.swing.JPanel" name="jPanel23">
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout">
-                            <Property name="horizontalGap" type="int" value="10"/>
-                          </Layout>
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
                           <SubComponents>
                             <Container class="javax.swing.JPanel" name="jPanel24">
                               <Constraints>
@@ -434,9 +432,7 @@
                         </Container>
                         <Container class="javax.swing.JPanel" name="jPanel26">
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout">
-                            <Property name="horizontalGap" type="int" value="10"/>
-                          </Layout>
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
                           <SubComponents>
                             <Container class="javax.swing.JPanel" name="jPanel27">
                               <Constraints>

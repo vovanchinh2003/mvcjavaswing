@@ -1,11 +1,11 @@
-package com.pxu.dao;
+package pxu.com.dao;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-import com.phuxuan.quanlyktx.connectJDBC.Databaseee;
-import com.pxu.model.StudentModel;
+import pxu.com.connect.connecting;
+import pxu.com.model.StudentModel;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +25,7 @@ public class StudentDao {
 //    public static ArrayList<StudentModel> getAll() throws SQLException, ClassNotFoundException {
 //        ArrayList<StudentModel> lst = new ArrayList<>();
 //        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-//        Connection conn = Databaseee.getConnection();
+//        Connection conn = connecting.getConnection();
 //        try {
 //            Statement stmt = conn.createStatement();
 //            String sql = "select * from SINH_VIEN ";
@@ -59,7 +59,7 @@ public class StudentDao {
         String sql = "INSERT INTO student (student_id,student_name,faculty,major,birth_date,id_card,phone_number,"
                 + " gender,hometown,room_id,violation_count,"
                 + " check_in_date,status,student_image) VALUES (?,?, ?, ?, ?, ?,?,?,?,?,?,?,?,?)";
-        try (Connection conn = Databaseee.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getStudent_id());
             prstt.setString(2, s.getStudent_name());
             prstt.setString(3, s.getFaculty());
@@ -87,7 +87,7 @@ public class StudentDao {
     public boolean update(StudentModel s) throws SQLException, ClassNotFoundException {
         String sql = "UPDATE student set room_id=?"
                 + " where student_id=?";
-        try (Connection conn = Databaseee.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getRoom_id());
             prstt.setString(2, s.getStudent_id());
             return prstt.executeUpdate() > 0;
@@ -97,7 +97,7 @@ public class StudentDao {
     public boolean updatetrangthai(StudentModel s) throws SQLException, ClassNotFoundException {
         String sql = "UPDATE student set status=?"
                 + " where student_id=?";
-        try (Connection conn = Databaseee.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getStatus());
             prstt.setString(2, s.getStudent_id());
             return prstt.executeUpdate() > 0;
@@ -106,7 +106,7 @@ public class StudentDao {
 //
 //    public boolean delete(Phongmodel ph) throws SQLException, ClassNotFoundException {
 //        String sql = "delete from phong where maphong=?";
-//        Connection conn = Databaseee.getConnection();
+//        Connection conn = connecting.getConnection();
 //        PreparedStatement prstt = conn.prepareStatement(sql);
 //        {
 //            prstt.setString(1, ph.getMaphong());
@@ -117,7 +117,7 @@ public class StudentDao {
 
     public StudentModel FindManv(String maSV) throws SQLException, ClassNotFoundException {
         String sql = "select * from student where student_id=?";
-        try (Connection conn = Databaseee.getConnection(); PreparedStatement prst = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prst = conn.prepareStatement(sql);) {
             prst.setString(1, maSV);
             try (ResultSet rs = prst.executeQuery();) {
                 if (rs.next()) {

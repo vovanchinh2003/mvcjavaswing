@@ -2,19 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.pxu.views;
+package pxu.com.views;
 
-import com.pxu.dialogchek.ImageHelperR;
-import com.pxu.dialogchek.sheardatta;
-import com.phuxuan.quanlyktx.connectJDBC.Databaseee;
-import com.pxu.dao.CheckoutDao;
-import com.pxu.dao.StudentDao;
-import com.pxu.dao.RoomrentalDao;
-import com.pxu.dao.RoomtransferDao;
-import com.pxu.model.CheckoutModel;
-import com.pxu.model.StudentModel;
-import com.pxu.model.RoomrentalModel;
-import com.pxu.model.RoomtransferModel;
+import pxu.com.dialogchek.imageheiper;
+import pxu.com.dialogchek.showuser;
+import pxu.com.connect.connecting;
+import pxu.com.dao.CheckoutDao;
+import pxu.com.dao.StudentDao;
+import pxu.com.dao.RoomrentalDao;
+import pxu.com.dao.RoomtransferDao;
+import pxu.com.model.CheckoutModel;
+import pxu.com.model.StudentModel;
+import pxu.com.model.RoomrentalModel;
+import pxu.com.model.RoomtransferModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -51,14 +51,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author chinh
  */
-public class Trangchu extends javax.swing.JFrame implements MouseListener {
-    
+public class home extends javax.swing.JFrame implements MouseListener {
+
     private byte[] resonalImage;
 
     /**
      * Creates new form Trangchu
      */
-    public Trangchu() throws SQLException {
+    public home() throws SQLException {
         initComponents();
         taophong();
         pro();
@@ -67,20 +67,20 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         rightmouse();
         loadcombomaphong();
     }
-    
+
     private void pro() {
-        txtmand.setText(sheardatta.nguoiDangNhap.getFull_name());
-        txtvaitro.setText(sheardatta.nguoiDangNhap.getPosition());
-        if (sheardatta.nguoiDangNhap.getPosition().equals("Quản lý")) {
-            
-        } else if (sheardatta.nguoiDangNhap.getPosition().equals("Nhân viên")) {
+        txtmand.setText(showuser.nguoiDangNhap.getFull_name());
+        txtvaitro.setText(showuser.nguoiDangNhap.getPosition());
+        if (showuser.nguoiDangNhap.getPosition().equals("Quản lý")) {
+
+        } else if (showuser.nguoiDangNhap.getPosition().equals("Nhân viên")) {
             jButton1.setEnabled(false);
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jButton7.setEnabled(false);
         }
     }
-    
+
     private void rightmouse() {
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
@@ -106,15 +106,15 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             }
         });
     }
-    
+
     private void showdate() {
         java.util.Date d = new java.util.Date();
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         String dat = s.format(d);
         lbtDate.setText(dat);
-        
+
     }
-    
+
     private void showTime() {
         new Timer(0, new ActionListener() {
             @Override
@@ -126,22 +126,21 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             }
         }).start();
     }
-    
+
     private void taophong() {
         try {
-            Connection connection = Databaseee.getConnection();
+            Connection connection = connecting.getConnection();
             Statement statement = connection.createStatement();
             String sql = "select * from room";
             ResultSet resultSet = statement.executeQuery(sql);
-            
+
             while (resultSet.next()) {
                 createRoomPanel(resultSet);
             }
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
         pack();
         setLocationRelativeTo(null);
     }
@@ -157,7 +156,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON3) {
-                        // Replace this comment with the code to show the context menu
+                        // Replace this comment with the code to showuser the context menu
                         JPopupMenu popup = createContextMenu();
                         popup.show(panel, e.getX(), e.getY());
                     }
@@ -166,9 +165,9 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             // Add the panel to the main panel
             addRoomToMainPanel(panel);
         } catch (SQLException ex) {
-            Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
 // Add this method to create the context menu
@@ -183,9 +182,9 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     laysinhvien();
                     jFrame2.setVisible(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -206,7 +205,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         popup.add(xoaphong);
         return popup;
     }
-    
+
     private JPanel createBasicRoomPanel(ResultSet resultSet) throws SQLException {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 1, 6, 3));
@@ -217,7 +216,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         panel.setBackground(backgroundColor);
         return panel;
     }
-    
+
     private void setRoomDetails(ResultSet resultSet, JPanel panel) {
         try {
             String maphong = resultSet.getString("room_id");
@@ -230,58 +229,58 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             JLabel label3 = createLabel("Loại phòng: " + String.valueOf(loaiphong));
             JLabel label4 = createLabel("Số giường: " + String.valueOf(songiuong));
             panel.addMouseListener(this);
-            
+
             panel.add(label1);
             panel.add(label2);
             panel.add(label3);
             panel.add(label4);
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
-    
+
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("", Font.BOLD, 13));
         label.setForeground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
-        
+
         return label;
     }
-    
+
     private void addRoomToMainPanel(JPanel roomPanel) {
         jPanel2.add(roomPanel);
-        
+
     }
-    
+
     private void reloadRoomStatus() {
         jPanel2.removeAll(); // Xóa các phòng hiện tại trên giao diện
         try {
-            Connection connection = Databaseee.getConnection();
+            Connection connection = connecting.getConnection();
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM room";
             ResultSet resultSet = statement.executeQuery(sql);
-            
+
             while (resultSet.next()) {
                 createRoomPanel(resultSet);
             }
-            
+
             statement.close();
             connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         jPanel2.revalidate(); // Cập nhật giao diện sau khi thêm lại các phòng
         jPanel2.repaint();
     }
-    
+
     private void capnhatsonguoiphongmoi() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + txtmp.getText() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             if (rs.next()) {
@@ -293,10 +292,10 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             ex.printStackTrace();
         }
     }
-    
+
     private void loadcombomaphong() throws SQLException {
         String sql = "select room_id from room";
-        Connection conn = Databaseee.getConnection();
+        Connection conn = connecting.getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         while (rs.next()) {
@@ -306,11 +305,11 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         conn.close();
         stmt.close();
     }
-    
+
     private boolean chekngayvao() {
         try {
             String sqlsqlc = "select * from student where student_id=N'" + txtmasv1.getText() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             while (rs.next()) {
@@ -324,11 +323,11 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         }
         return false;
     }
-    
+
     private boolean checksonguoiophongmoi() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + combomap.getSelectedItem() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             while (rs.next()) {
@@ -343,11 +342,11 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         }
         return false;
     }
-    
+
     private void capnhatsonguoiphongcu() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + txtmp.getText() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             if (rs.next()) {
@@ -359,11 +358,11 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             ex.printStackTrace();
         }
     }
-    
+
     private void capnhatsonguoiphongmoiii() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + combomap.getSelectedItem() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             if (rs.next()) {
@@ -545,7 +544,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
 
         jPanel6.setLayout(new java.awt.CardLayout());
 
-        jPanel16.setLayout(new java.awt.GridLayout());
+        jPanel16.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
@@ -592,7 +591,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.PAGE_END);
 
-        jPanel7.setLayout(new java.awt.GridLayout());
+        jPanel7.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel10.setLayout(new java.awt.BorderLayout());
 
@@ -621,7 +620,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
 
         jPanel7.add(jPanel10);
 
-        jPanel23.setLayout(new java.awt.CardLayout(10, 0));
+        jPanel23.setLayout(new java.awt.CardLayout());
 
         jPanel24.setLayout(new java.awt.GridLayout(5, 0, 0, 40));
 
@@ -658,7 +657,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
 
         jPanel7.add(jPanel23);
 
-        jPanel26.setLayout(new java.awt.CardLayout(10, 0));
+        jPanel26.setLayout(new java.awt.CardLayout());
 
         jPanel27.setLayout(new java.awt.GridLayout(5, 0, 0, 40));
 
@@ -1082,7 +1081,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
     private boolean chek() {
         try {
             String sqlsqlc = "select * from room where room_id=N'" + txtmp.getText() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             while (rs.next()) {
@@ -1114,7 +1113,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     capnhatsonguoiphongmoiii();
                     /// thêm vào hóa đơn chuyển phòng
                     String sql = "select * from user where full_name=N'" + txtmand.getText() + "'";
-                    Connection conn = Databaseee.getConnection();
+                    Connection conn = connecting.getConnection();
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
                     while (rs.next()) {
@@ -1133,12 +1132,12 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     }
                     reloadRoomStatus();
                 } catch (SQLException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
         } else {
         }
         jFrame3.dispose();
@@ -1157,7 +1156,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             capnhatsonguoiphongcu();
             /// thêm vào hóa đơn trả phòng
             String sql = "select * from user where full_name=N'" + txtmand.getText() + "'";
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -1175,15 +1174,15 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             }
             reloadRoomStatus();
         } catch (SQLException ex) {
-            Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
         }
         jFrame4.dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
     private boolean checkmasv() {
         try {
-            Connection conn = Databaseee.getConnection();
+            Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             String sql = "select * from STUDENT";
             ResultSet rs = stmt.executeQuery(sql);
@@ -1230,7 +1229,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     dao.insert(s);
                     /// thêm vào hóa đơn thuê phòng
                     String sql = "select * from user where full_name=N'" + txtmand.getText() + "'";
-                    Connection conn = Databaseee.getConnection();
+                    Connection conn = connecting.getConnection();
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
                     while (rs.next()) {
@@ -1249,9 +1248,9 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     }
                     reloadRoomStatus();
                 } catch (SQLException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -1270,7 +1269,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                     return f.getName().toLowerCase().endsWith(".jpg");
                 }
             }
-            
+
             @Override
             public String getDescription() {
                 return "Image File (*.jpg)";
@@ -1282,10 +1281,10 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         File file = chooser.getSelectedFile();
         try {
             ImageIcon icon = new ImageIcon(file.getPath());
-            Image img = ImageHelperR.resize(icon.getImage(), 313, 271);
+            Image img = imageheiper.resize(icon.getImage(), 313, 271);
             ImageIcon resizeIcon = new ImageIcon(img);
             jlableanh.setIcon(resizeIcon);
-            resonalImage = ImageHelperR.toByteArray(img, "jpg");
+            resonalImage = imageheiper.toByteArray(img, "jpg");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(rootPane, "looix");
         }
@@ -1312,23 +1311,24 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Trangchu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Trangchu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Trangchu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Trangchu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Trangchu().setVisible(true);
+                    new home().setVisible(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(Trangchu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -1450,7 +1450,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel txtvaitro;
     // End of variables declaration//GEN-END:variables
  private void laysinhvien() throws SQLException, ClassNotFoundException {
-        Connection conn = Databaseee.getConnection();
+        Connection conn = connecting.getConnection();
         try {
             String sqll = "select * from student where status=N'ĐANG THUÊ' and room_id =N'" + txtmp.getText() + "'";
             String[] aray = {"Mã sinh viên", "Họ tên sinh viên", "Mã phòng", "Ngày vào", "Số lần vi phạm", "Trạng thái"};
@@ -1471,7 +1471,7 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
         } catch (SQLException e) {
         }
     }
-    
+
     @Override
     public void mouseClicked(MouseEvent e) {
         try {
@@ -1489,21 +1489,21 @@ public class Trangchu extends javax.swing.JFrame implements MouseListener {
             ex.printStackTrace();
         }
     }
-    
+
     @Override
     public void mousePressed(MouseEvent e) {
     }
-    
+
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-    
+
     @Override
     public void mouseEntered(MouseEvent e) {
     }
-    
+
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    
+
 }

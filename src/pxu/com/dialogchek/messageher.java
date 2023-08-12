@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.pxu.dialogchek;
+package pxu.com.dialogchek;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author chinh
  */
-public class MessageHerr {
+public class messageher {
      public static void showMessageDialog(Component parent, String content, String title){
         JOptionPane.showMessageDialog(parent,  title,content, JOptionPane.INFORMATION_MESSAGE);
     }

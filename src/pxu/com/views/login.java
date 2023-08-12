@@ -2,24 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.pxu.views;
+package pxu.com.views;
 
-import com.pxu.dialogchek.KIEMTRANGUOIDUNGHELPER;
-import com.pxu.dialogchek.MessageHerr;
-import com.pxu.dialogchek.sheardatta;
-import com.pxu.dao.UserDao;
-import com.pxu.model.UserModel;
+import pxu.com.dialogchek.checklogin;
+import pxu.com.dialogchek.messageher;
+import pxu.com.dialogchek.showuser;
+import pxu.com.dao.UserDao;
+import pxu.com.model.UserModel;
 
 /**
  *
  * @author chinh
  */
-public class Dangnhapp extends javax.swing.JFrame {
+public class login extends javax.swing.JFrame {
 
     /**
      * Creates new form Dangnhapp
      */
-    public Dangnhapp() {
+    public login() {
         initComponents();
     }
 
@@ -82,26 +82,26 @@ public class Dangnhapp extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         StringBuilder sb = new StringBuilder();
-        KIEMTRANGUOIDUNGHELPER.validateEmpty(txttendangnhap, sb, "no");
-        KIEMTRANGUOIDUNGHELPER.validateEmpty(txtmk, sb, "no");
+        checklogin.validateEmpty(txttendangnhap, sb, "no");
+        checklogin.validateEmpty(txtmk, sb, "no");
         if (sb.length() > 0) {
-            MessageHerr.showErrorDialog(this, sb.toString(), "Lỗi ");
+            messageher.showErrorDialog(this, sb.toString(), "Lỗi ");
             return;
         }
         try {
             UserDao dao = new UserDao();
             UserModel nd = dao.checkLogin(txttendangnhap.getText(), new String(txtmk.getPassword()));
             if (nd == null) {
-                MessageHerr.showErrorDialog(this, "ten dang nhap sai hay mk sai", "Tên đăng nhập hoặc mật khẩu bị sai !!");
+                messageher.showErrorDialog(this, "ten dang nhap sai hay mk sai", "Tên đăng nhập hoặc mật khẩu bị sai !!");
             } else {
-                sheardatta.nguoiDangNhap = nd;
-                Trangchu h = new Trangchu();
+                showuser.nguoiDangNhap = nd;
+                home h = new home();
                 h.setVisible(true);
                 this.dispose();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            MessageHerr.showErrorDialog(this, e.getMessage(), "Tên đăng nhập hoặc mật khẩu bị sai !!");
+            messageher.showErrorDialog(this, e.getMessage(), "Tên đăng nhập hoặc mật khẩu bị sai !!");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -122,21 +122,27 @@ public class Dangnhapp extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dangnhapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dangnhapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dangnhapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dangnhapp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dangnhapp().setVisible(true);
+                new login().setVisible(true);
             }
         });
     }

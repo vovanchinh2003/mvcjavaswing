@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.pxu.dialogchek;
+package pxu.com.dialogchek;
 
 import java.awt.Color;
 import javax.swing.JPasswordField;
@@ -12,7 +12,7 @@ import javax.swing.JTextField;
  *
  * @author chinh
  */
-public class KIEMTRANGUOIDUNGHELPER {
+public class checklogin {
     public static void validateEmpty(JTextField field, StringBuilder sb, String errorMessage){
         if(field.getText().equals("")){
             sb.append(errorMessage).append("\n");
