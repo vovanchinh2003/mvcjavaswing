@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import pxu.com.connect.connecting;
 import pxu.com.dao.UserDao;
+import pxu.com.dialogchek.showuser;
 import pxu.com.model.StudentModel;
 import pxu.com.model.TableUserModel;
 import pxu.com.model.UserModel;
@@ -30,10 +31,12 @@ import pxu.com.model.UserModel;
  * @author NGUYEN DUNG
  */
 public class user extends javax.swing.JFrame {
+
     Connection cn;
     long count, soTrang, trang = 1;
     Statement st;
     ResultSet rs;
+
     /**
      * Creates new form sinhvien
      */
@@ -57,8 +60,6 @@ public class user extends javax.swing.JFrame {
     DefaultTableModel tblModel;
     ArrayList<UserModel> lstuser;
     TableUserModel tbm;
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -562,7 +563,7 @@ public class user extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(user.class.getName()).log(Level.SEVERE, null, ex);
             }
-            try ( Statement st = cn.createStatement()) {
+            try (Statement st = cn.createStatement()) {
                 ResultSet rs = st.executeQuery(query);
                 while (rs.next()) {
                     count = rs.getLong(1);
@@ -677,8 +678,6 @@ public class user extends javax.swing.JFrame {
         trs.setRowFilter(filter);
     }
 
- 
-
     public void LoadNhanSuTable() throws Exception {
         lstuser = UserDao.getall();
         if (lstuser != null) {
@@ -728,7 +727,11 @@ public class user extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new user().setVisible(true);
+                login h = new login();
+                h.setVisible(true);
+                if (showuser.nguoiDangNhap.getPosition().equals("Quản lý")) {
+                    new user().setVisible(true);
+                }
             }
         });
     }

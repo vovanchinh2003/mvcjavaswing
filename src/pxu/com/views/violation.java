@@ -115,7 +115,8 @@ public class violation extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-     private void capnhatsoklsvv() {
+
+    private void capnhatsoklsvv() {
         try {
             String sqlsqlc = "select * from STUDENT where student_id=N'" + txtmasv1.getText() + "'";
             Connection conn = connecting.getConnection();
@@ -357,6 +358,7 @@ public class violation extends javax.swing.JFrame {
 
         jFrame2.setLocation(new java.awt.Point(560, 130));
         jFrame2.setMinimumSize(new java.awt.Dimension(430, 538));
+        jFrame2.setUndecorated(true);
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
         jPanel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 0), 2));
@@ -707,12 +709,16 @@ public class violation extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new violation().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(violation.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(violation.class.getName()).log(Level.SEVERE, null, ex);
+                login h = new login();
+                h.setVisible(true);
+                if (showuser.nguoiDangNhap.getPosition().equals("Quản lý")) {
+                    try {
+                        new violation().setVisible(true);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(violation.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(violation.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });

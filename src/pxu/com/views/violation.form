@@ -253,6 +253,7 @@
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[430, 538]"/>
         </Property>
+        <Property name="undecorated" type="boolean" value="true"/>
       </Properties>
 
       <Layout>
