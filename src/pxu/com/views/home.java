@@ -66,8 +66,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
         showdate();
         rightmouse();
         loadcombomaphong();
-//        this.setSize(1320, 750);
-//        this.setLocationRelativeTo(null);
+        this.setSize(1320, 750);
+        this.setLocationRelativeTo(null);
     }
 
     private void pro() {
@@ -891,6 +891,11 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jButton3.setText("Kỷ luật");
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton3);
         jToolBar1.add(jSeparator4);
 
@@ -1159,7 +1164,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 CheckoutModel c = new CheckoutModel();
-                c.setStudent_id(txtmasv2.getText());
+                c.setStudent_id(txtmasv1.getText());
                 c.setUser_id(rs.getString("user_id"));
                 c.setRoom_id(txtmp.getText());
                 SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
@@ -1291,6 +1296,17 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jFrame1.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            violation h = new violation();
+            h.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

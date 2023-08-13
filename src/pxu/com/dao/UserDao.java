@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class UserDao {
 
     public UserModel checkLogin(String username, String password) throws SQLException, ClassNotFoundException {
-        String sql = "select full_name,username,password,position from user"
+        String sql = "select user_id, full_name,username,password,position from user"
                 + " where username=? and password=?";
         try (
                 Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
@@ -31,6 +31,7 @@ public class UserDao {
                 if (rs.next()) {
                     UserModel nd = new UserModel();
                     nd.setUsername(username);
+                    nd.setUser_id(rs.getString("user_id"));
                     nd.setPosition(rs.getString("position"));
                     nd.setFull_name(rs.getString("full_name"));
                     return nd;
