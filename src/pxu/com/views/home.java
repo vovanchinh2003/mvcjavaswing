@@ -46,6 +46,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
+import pxu.com.dao.RoomDao;
+import pxu.com.model.RoomModel;
 
 /**
  *
@@ -198,10 +200,10 @@ public class home extends javax.swing.JFrame implements MouseListener {
             }
         });
         popup.add(themp);
-        JMenuItem xoaphong = new JMenuItem("Tính tiền điện, nước");
+        JMenuItem xoaphong = new JMenuItem("Thêm phòng");
         xoaphong.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Handle Tính tiền điện, nước
+                jFrame5.setVisible(true);
             }
         });
         popup.add(xoaphong);
@@ -458,6 +460,14 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jScrollPane3 = new javax.swing.JScrollPane();
         lydo1 = new javax.swing.JTextPane();
         jButton10 = new javax.swing.JButton();
+        jFrame5 = new javax.swing.JFrame();
+        jPanel31 = new javax.swing.JPanel();
+        jPanel32 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        txtmaphong = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        comboloaiphong = new javax.swing.JComboBox<>();
+        jButton14 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
@@ -865,6 +875,57 @@ public class home extends javax.swing.JFrame implements MouseListener {
         );
 
         jFrame4.getContentPane().add(jPanel14, java.awt.BorderLayout.CENTER);
+
+        jFrame5.setTitle("Thêm phòng");
+        jFrame5.setLocation(new java.awt.Point(550, 300));
+        jFrame5.setMinimumSize(new java.awt.Dimension(400, 170));
+
+        jPanel32.setLayout(new java.awt.GridLayout(2, 0, 0, 10));
+
+        jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel25.setText("Mã phòng:");
+        jPanel32.add(jLabel25);
+        jPanel32.add(txtmaphong);
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel26.setText("Loại phòng:");
+        jPanel32.add(jLabel26);
+
+        comboloaiphong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VIP", "THƯỜNG" }));
+        jPanel32.add(comboloaiphong);
+
+        jButton14.setBackground(new java.awt.Color(51, 255, 51));
+        jButton14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton14.setForeground(new java.awt.Color(255, 255, 255));
+        jButton14.setText("Thêm phòng");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel31Layout = new javax.swing.GroupLayout(jPanel31);
+        jPanel31.setLayout(jPanel31Layout);
+        jPanel31Layout.setHorizontalGroup(
+            jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel31Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton14)
+                    .addComponent(jPanel32, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        jPanel31Layout.setVerticalGroup(
+            jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel31Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jPanel32, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton14)
+                .addGap(32, 32, 32))
+        );
+
+        jFrame5.getContentPane().add(jPanel31, java.awt.BorderLayout.CENTER);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -1308,6 +1369,36 @@ public class home extends javax.swing.JFrame implements MouseListener {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        try {
+            RoomModel p = new RoomModel();
+            p.setRoom_id(txtmaphong.getText());
+            p.setRoom_type(comboloaiphong.getSelectedItem().toString());
+            if (p.getRoom_type().equals("VIP")) {
+                p.setBed_count(8);
+            } else if (p.getRoom_type().equals("THƯỜNG")) {
+                p.setBed_count(4);
+            }
+            if (p.getRoom_type().equals("VIP")) {
+                p.setRoom_price(p.getBed_count() * 600);
+            } else if (p.getRoom_type().equals("THƯỜNG")) {
+                p.setRoom_price(p.getBed_count() * 300);
+            }
+            p.setOccupancy_count(0);
+            RoomDao dao = new RoomDao();
+            dao.insert(p);
+            reloadRoomStatus();
+            JOptionPane.showMessageDialog(rootPane, "Thêm phòng thành công !!!");
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        jFrame5.dispose();
+    }//GEN-LAST:event_jButton14ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1350,6 +1441,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> combokhoa;
+    private javax.swing.JComboBox<String> comboloaiphong;
     private javax.swing.JComboBox<String> combomap;
     private javax.swing.JComboBox<String> combonganh;
     private javax.swing.JComboBox<String> comgioitinh;
@@ -1362,6 +1454,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1373,6 +1466,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
     private javax.swing.JFrame jFrame4;
+    private javax.swing.JFrame jFrame5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1389,6 +1483,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
@@ -1425,6 +1521,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -1453,6 +1551,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JTextField txtcmnd;
     private javax.swing.JTextField txthoten;
     private javax.swing.JLabel txtmand;
+    private javax.swing.JTextField txtmaphong;
     private javax.swing.JTextField txtmasv;
     private javax.swing.JTextField txtmasv1;
     private javax.swing.JTextField txtmasv2;
