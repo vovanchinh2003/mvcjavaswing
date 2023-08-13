@@ -4,18 +4,18 @@ package pxu.com.model;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author chinh
  */
 public class UserModel {
-    private String user_id,full_name,phone_number,address,position,password,username;
+
+    private String user_id, full_name, phone_number, address, position, password, username, user_image;
 
     public UserModel() {
     }
 
-    public UserModel(String user_id, String full_name, String phone_number, String address, String position, String password, String username) {
+    public UserModel(String user_id, String full_name, String phone_number, String address, String position, String password, String username, String user_image) {
         this.user_id = user_id;
         this.full_name = full_name;
         this.phone_number = phone_number;
@@ -23,6 +23,8 @@ public class UserModel {
         this.position = position;
         this.password = password;
         this.username = username;
+        this.user_image = user_image;
+
     }
 
     public String getUser_id() {
@@ -81,6 +83,17 @@ public class UserModel {
         this.username = username;
     }
 
-   
-    
+    public String getUser_image() {
+        return user_image;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" + "user_id=" + user_id + ", full_name=" + full_name + ", phone_number=" + phone_number + ", address=" + address + ", position=" + position + ", password=" + password + ", username=" + username + ", user_image=" + user_image + '}';
+    }
+
+    public void setUser_image(String user_image) {
+        this.user_image = user_image;
+    }
+
 }
