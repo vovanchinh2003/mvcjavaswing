@@ -4,6 +4,7 @@
  */
 package pxu.com.dao;
 
+import java.sql.Blob;
 import pxu.com.connect.connecting;
 import pxu.com.model.UserModel;
 
@@ -13,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.sql.rowset.serial.SerialBlob;
 
 /**
  *
@@ -24,10 +26,10 @@ public class UserDao {
         String sql = "select user_id, full_name,username,password,position from user"
                 + " where username=? and password=?";
         try (
-                Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
+                 Connection conn = connecting.getConnection();  PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, username);
             prstt.setString(2, password);
-            try (ResultSet rs = prstt.executeQuery();) {
+            try ( ResultSet rs = prstt.executeQuery();) {
                 if (rs.next()) {
                     UserModel nd = new UserModel();
                     nd.setUsername(username);
@@ -41,90 +43,92 @@ public class UserDao {
         return null;
     }
 
-//    public static ArrayList<UserModel> getall() throws SQLException {
-//        ArrayList<UserModel> list = new ArrayList<>();
-//
-//        Connection conn = connecting.getConnection();
-//        try {
-//            Statement stmt = conn.createStatement();
-//            String sql = "select * from NGUOI_DUNG ";
-//            ResultSet rs = stmt.executeQuery(sql);
-//            while (rs.next()) {
-//                UserModel n = new UserModel();
-//                n.setMand(rs.getString(1));
-//                n.setHotennd(rs.getString(2));
-//                n.setDienthoai(rs.getString(3));
-//                n.setDiachi(rs.getString(4));
-//                n.setTendangnhap(rs.getString(5));
-//                n.setChucvu(rs.getString(6));
-//                n.setMatkhau(rs.getString(7));
-//                list.add(n);
-//            }
-//            rs.close();
-//            stmt.close();
-//            conn.close();
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return list;
-//    }
-//
-//    public boolean insertin(UserModel m) throws SQLException {
-//        String sql = "INSERT INTO NGUOI_DUNG (mand,hotennd,dienthoai,diachi,tendangnhap,chucvu,matkhau) VALUES (?, ?, ?, ?, ?, ?, ?)";
-//        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
-//            prstt.setString(1, m.getMand());
-//            prstt.setString(2, m.getHotennd());
-//            prstt.setString(3, m.getDienthoai());
-//            prstt.setString(4, m.getDiachi());
-//            prstt.setString(5, m.getChucvu());
-//            prstt.setString(6, m.getTendangnhap());
-//            prstt.setString(7, m.getMatkhau());
-//            return prstt.executeUpdate() > 0;
-//        }
-//    }
-//
-//    public boolean update(UserModel m) throws SQLException {
-//        String sql = "update NGUOI_DUNG set hotennd=?,dienthoai=?,diachi=?,tendangnhap=?,chucvu=?,matkhau=?"
-//                + " where mand=?";
-//        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
-//            prstt.setString(7, m.getMand());
-//            prstt.setString(1, m.getHotennd());
-//            prstt.setString(2, m.getDienthoai());
-//            prstt.setString(3, m.getDiachi());
-//            prstt.setString(4, m.getTendangnhap());
-//            prstt.setString(5, m.getChucvu());
-//            prstt.setString(6, m.getMatkhau());
-//            return prstt.executeUpdate() > 0;
-//        }
-//    }
-//
-//    public boolean delete(UserModel m) throws SQLException {
-//        String sql = "delete from NGUOI_DUNG"
-//                + " where mand=?";
-//        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
-//            prstt.setString(1, m.getMand());
-//            return prstt.executeUpdate() > 0;
-//        }
-//    }
-//
-//    public UserModel FindManv(String mand) throws SQLException, ClassNotFoundException {
-//        String sql = "select * from NGUOI_DUNG where mand=?";
-//        try (
-//                Connection conn = connecting.getConnection(); PreparedStatement prst = conn.prepareStatement(sql);) {
-//            prst.setString(1, mand);
-//            try (ResultSet rs = prst.executeQuery();) {
-//                if (rs.next()) {
-//                    UserModel m = new UserModel();
-//                    m.setMand(rs.getString("mand"));
-//                    m.setHotennd(rs.getString("hotennd"));
-//                    m.setDienthoai(rs.getString("dienthoai"));
-//                    m.setDiachi(rs.getString("diachi"));
-//                    m.setChucvu(rs.getString("chucvu"));
-//                    m.setMatkhau(rs.getString("matkhau"));
-//                    return m;
-//                }
-//            }
-//            return null;
-//        }
-//    }
+    public static ArrayList<UserModel> getall() throws SQLException {
+        ArrayList<UserModel> list = new ArrayList<>();
+
+        Connection conn = connecting.getConnection();
+        try {
+            Statement stmt = conn.createStatement();
+            String sql = "select * from user";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                UserModel user = new UserModel();
+                user.setUser_id(rs.getString(1));
+                user.setFull_name(rs.getString(2));
+                user.setPhone_number(rs.getString(3));
+                user.setAddress(rs.getString(4));
+                user.setUsername(rs.getString(5));
+                user.setPosition(rs.getString(6));
+                user.setPassword(rs.getString(7));
+                list.add(user);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
+    public boolean insertin(UserModel user) throws SQLException {
+        String sql = "INSERT INTO user (user_id, full_name, phone_number, address, position,username, password, user_image) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+        try ( Connection conn = connecting.getConnection();  PreparedStatement prstt = conn.prepareStatement(sql);) {
+            prstt.setString(1, user.getUser_id());
+            prstt.setString(2, user.getFull_name());
+            prstt.setString(3, user.getPhone_number());
+            prstt.setString(4, user.getAddress());
+            prstt.setString(5, user.getPosition());
+            prstt.setString(6, user.getUsername());
+            prstt.setString(7, user.getPassword());
+            prstt.setString(8, user.getUser_image());
+            return prstt.executeUpdate() > 0;
+        }
+    }
+    public UserModel FindManv(String user) throws SQLException, ClassNotFoundException {
+        String sql = "select * from user where user_id=?";
+        try (
+                 Connection conn = connecting.getConnection();  PreparedStatement prst = conn.prepareStatement(sql);) {
+            prst.setString(1, user);
+            try ( ResultSet rs = prst.executeQuery();) {
+                if (rs.next()) {
+                    UserModel users = new UserModel();
+                    users.setUser_id(rs.getString("user_id"));
+                    users.setFull_name(rs.getString("full_name"));
+                    users.setPhone_number(rs.getString("phone_number"));
+                    users.setAddress(rs.getString("address"));
+                    users.setPosition(rs.getString("position"));
+                    users.setUsername(rs.getString("username"));
+                    users.setPassword(rs.getString("password"));
+                    return users;
+                }
+            }
+            return null;
+        }
+    }
+   public boolean update(UserModel user) throws SQLException {
+    String sql = "UPDATE user SET full_name = ?, phone_number = ?, address = ?, position = ?, username = ?, password = ?, user_image = ? WHERE user_id = ?";
+    try (Connection conn = connecting.getConnection();
+         PreparedStatement prstt = conn.prepareStatement(sql)) {
+        prstt.setString(1, user.getFull_name());
+        prstt.setString(2, user.getPhone_number());
+        prstt.setString(3, user.getAddress());
+        prstt.setString(4, user.getPosition());
+        prstt.setString(5, user.getUsername());
+        prstt.setString(6, user.getPassword());
+        prstt.setString(7, user.getUser_image());
+        prstt.setString(8, user.getUser_id());
+
+        return prstt.executeUpdate() > 0;
+    }
+}
+    public boolean delete(UserModel user_id) throws SQLException {
+    String sql = "DELETE FROM user WHERE user_id = ?";
+    try (Connection conn = connecting.getConnection();
+         PreparedStatement prstt = conn.prepareStatement(sql)) {
+        prstt.setString(1, user_id.getUser_id());
+
+        return prstt.executeUpdate() > 0;
+    }
+}
+
 }
