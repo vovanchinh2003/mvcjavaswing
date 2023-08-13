@@ -23,7 +23,7 @@ public class connecting {
     public static Connection getConnection() throws SQLException {
         try {
             // kết nối với cơ sở dữ liệu
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ql_ktxx", "root", "chinh2003");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ql_ktxx", "root", "Hung0976661824");
             Statement statement = connection.createStatement();
             // lấy dữ liệu từ cơ sở dữ liệu
             System.out.println("Kết nối thành công !!!");
