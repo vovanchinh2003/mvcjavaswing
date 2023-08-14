@@ -63,7 +63,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     public home() throws SQLException {
         initComponents();
         taophong();
-//        pro();
+        pro();
         showTime();
         showdate();
         rightmouse();
