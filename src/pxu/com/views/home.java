@@ -77,7 +77,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     public home() throws SQLException {
         initComponents();
         taophong();
-        pro();
+//        pro();
         showTime();
         showdate();
         rightmouse();
@@ -92,10 +92,10 @@ public class home extends javax.swing.JFrame implements MouseListener {
         if (showuser.nguoiDangNhap.getPosition().equals("Quản lý")) {
 
         } else if (showuser.nguoiDangNhap.getPosition().equals("Nhân viên")) {
-            jButton1.setEnabled(false);
-            jButton2.setEnabled(false);
-            jButton3.setEnabled(false);
-            jButton7.setEnabled(false);
+//            jButton1.setEnabled(false);
+//            jButton2.setEnabled(false);
+//            jButton3.setEnabled(false);
+//            jButton7.setEnabled(false);
         }
     }
 
@@ -532,9 +532,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jButton14 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton2 = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        jButton1 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         jButton3 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
@@ -995,69 +995,52 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/kytucxa.png"))); // NOI18N
-        jButton1.setText("Phòng");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jToolBar1.add(jButton1);
+        jButton2.setText("jButton2");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator2);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/sinhivnektx.png"))); // NOI18N
-        jButton2.setText("Sinh viên");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jToolBar1.add(jButton2);
+        jButton1.setText("jButton1");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator3);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/kyluiat.png"))); // NOI18N
-        jButton3.setText("Kỷ luật");
+        jButton3.setText("jButton3");
         jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
         jToolBar1.add(jSeparator4);
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/nhaxe.png"))); // NOI18N
-        jButton4.setText("Nhà xe");
+        jButton4.setText("jButton4");
         jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator5);
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/taikhoan.png"))); // NOI18N
-        jButton5.setText("Tài khoản");
+        jButton5.setText("jButton5");
         jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton5);
         jToolBar1.add(jSeparator7);
 
-        jButton6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/hoadon.png"))); // NOI18N
-        jButton6.setText("Hoá đơn");
+        jButton6.setText("jButton6");
         jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton6);
         jToolBar1.add(jSeparator8);
 
-        jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/thongke.png"))); // NOI18N
-        jButton7.setText("Thống kê");
+        jButton7.setText("jButton7");
         jButton7.setFocusable(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton7);
         jToolBar1.add(jSeparator9);
 
@@ -1494,17 +1477,6 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jFrame1.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            violation h = new violation();
-            h.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         try {
             RoomModel p = new RoomModel();
@@ -1534,17 +1506,6 @@ public class home extends javax.swing.JFrame implements MouseListener {
         }
         jFrame5.dispose();
     }//GEN-LAST:event_jButton14ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            crarental h = new crarental();
-            h.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void roomNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roomNameTextFieldKeyReleased
         String roomNameQuery = roomNameTextField.getText(); // Lấy giá trị từ trường văn bản nhập tên phòng
