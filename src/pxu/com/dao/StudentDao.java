@@ -56,7 +56,7 @@ public class StudentDao {
 //        return lst;
 //    }
     public boolean insert(StudentModel s) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO student (student_id,student_name,faculty,major,birth_date,id_card,phone_number,"
+        String sql = "INSERT INTO student (student_id,student_name,faculty,major,birth_date,gmail,phone_number,"
                 + " gender,hometown,room_id,violation_count,"
                 + " check_in_date,status,student_image) VALUES (?,?, ?, ?, ?, ?,?,?,?,?,?,?,?,?)";
         try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
@@ -65,7 +65,7 @@ public class StudentDao {
             prstt.setString(3, s.getFaculty());
             prstt.setString(4, s.getMajor());
             prstt.setDate(5, s.getBirth_date());
-            prstt.setString(6, s.getId_card());
+            prstt.setString(6, s.getGmail());
             prstt.setString(7, s.getPhone_number());
             prstt.setString(8, s.getGender());
             prstt.setString(9, s.getHometown());

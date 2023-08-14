@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -32,9 +33,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -254,6 +268,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
             JLabel label2 = createLabel("Số người: " + String.valueOf(songuoi));
             JLabel label3 = createLabel("Loại phòng: " + String.valueOf(loaiphong));
             JLabel label4 = createLabel("Số giường: " + String.valueOf(songiuong));
+            // nút nhận sự kiện
             panel.addMouseListener(this);
 
             panel.add(label1);
@@ -480,7 +495,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jLabel15 = new javax.swing.JLabel();
         comgioitinh = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
-        txtcmnd = new javax.swing.JTextField();
+        txtgmail = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         datengayvao = new com.toedter.calendar.JDateChooser();
         jFrame3 = new javax.swing.JFrame();
@@ -738,9 +753,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jPanel27.add(comgioitinh);
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel14.setText("CMND:");
+        jLabel14.setText("Gmail:");
         jPanel27.add(jLabel14);
-        jPanel27.add(txtcmnd);
+        jPanel27.add(txtgmail);
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setText("Ngày vào:");
@@ -1334,6 +1349,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         }
         return true;
     }
+
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         if (checkmasv()) {
             if (chek()) {
@@ -1352,7 +1368,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
                     SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
                     String ngaysinh = date.format(datengaysinh.getDate());
                     s.setBirth_date(Date.valueOf(ngaysinh));
-                    s.setId_card(txtcmnd.getText());
+                    s.setGmail(txtgmail.getText());
                     s.setPhone_number(txtsdt.getText());
                     s.setGender(comgioitinh.getSelectedItem().toString());
                     s.setHometown(txtquequan.getText());
@@ -1391,6 +1407,53 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 }
             }
         }
+        try {
+            ArrayList<String> list = new ArrayList<>();
+            list.add(txtgmail.getText());
+            for (int i = 0; i < list.size(); i++) {
+
+                Properties p = new Properties();
+                p.put("mail.smtp.auth", "true");
+                p.put("mail.smtp.starttls.enable", "true");
+                p.put("mail.smtp.host", "smtp.gmail.com");
+                p.put("mail.smtp.port", "587");
+
+                Session session = Session.getInstance(p, new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("vvc132003@gmail.com", "mwvfwkbyknepohte");
+                    }
+                });
+
+                String from = "vvc132003@gmail.com"; // Replace with the sender's email address
+                String tos = list.get(i).toString();
+                String subj = "Gửi đến bạn";
+                SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
+                String ngayvao = date.format(datengayvao.getDate());
+                String body = "Mã SV: " + txtmasv.getText()
+                        + "\nTên: " + txthoten.getText()
+                        + "\nNgày vào: " + ngayvao
+                        + "\nKhoa: " + combokhoa.getSelectedItem().toString()
+                        + "\nNgành: " + combonganh.getSelectedItem().toString()
+                        + "\nĐịa chỉ: " + txtquequan.getText()
+                        + "\nGiới tính: " + comgioitinh.getSelectedItem().toString()
+                        + "\nSĐT: " + txtsdt.getText()
+                        + "\nSố phòng bạn thuê: " + txtmp.getText();
+                Message msg = new MimeMessage(session);
+                msg.setFrom(new InternetAddress(from));
+                msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(tos));
+                msg.setSubject(subj);
+                msg.setText(body);
+
+                try (Transport transport = session.getTransport("smtp")) {
+                    transport.connect("smtp.gmail.com", "vvc132003@gmail.com", "qyqgwwjbbajzrrex");
+                    transport.sendMessage(msg, msg.getAllRecipients());
+                }
+                System.out.println("Email sent successfully to: " + tos);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         jFrame1.dispose();
 
     }//GEN-LAST:event_jButton12ActionPerformed
@@ -1639,7 +1702,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JTextPane lydo1;
     private javax.swing.JTextField roomNameTextField;
     private java.awt.ScrollPane scrollPane1;
-    private javax.swing.JTextField txtcmnd;
+    private javax.swing.JTextField txtgmail;
     private javax.swing.JTextField txthoten;
     private javax.swing.JLabel txtmand;
     private javax.swing.JTextField txtmaphong;

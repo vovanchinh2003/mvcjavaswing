@@ -13,7 +13,7 @@ import java.sql.Date;
  */
 public class StudentModel {
 
-    private String student_id, student_name, faculty, major, id_card, phone_number, room_id, gender, hometown, status;
+    private String student_id, student_name, faculty, major, gmail, phone_number, room_id, gender, hometown, status;
     private int violation_count;
     private Date check_in_date, birth_date;
     private byte[] student_image;
@@ -21,12 +21,12 @@ public class StudentModel {
     public StudentModel() {
     }
 
-    public StudentModel(String student_id, String student_name, String faculty, String major, String id_card, String phone_number, String room_id, String gender, String hometown, String status, int violation_count, Date check_in_date, Date birth_date, byte[] student_image) {
+    public StudentModel(String student_id, String student_name, String faculty, String major, String gmail, String phone_number, String room_id, String gender, String hometown, String status, int violation_count, Date check_in_date, Date birth_date, byte[] student_image) {
         this.student_id = student_id;
         this.student_name = student_name;
         this.faculty = faculty;
         this.major = major;
-        this.id_card = id_card;
+        this.gmail = gmail;
         this.phone_number = phone_number;
         this.room_id = room_id;
         this.gender = gender;
@@ -70,12 +70,12 @@ public class StudentModel {
         this.major = major;
     }
 
-    public String getId_card() {
-        return id_card;
+    public String getGmail() {
+        return gmail;
     }
 
-    public void setId_card(String id_card) {
-        this.id_card = id_card;
+    public void setGmail(String gmail) {
+        this.gmail = gmail;
     }
 
     public String getPhone_number() {
@@ -150,7 +150,7 @@ public class StudentModel {
         this.student_image = student_image;
     }
 
-   
+  
 
    
 }
