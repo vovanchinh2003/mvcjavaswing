@@ -63,7 +63,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     public home() throws SQLException {
         initComponents();
         taophong();
-        pro();
+//        pro();
         showTime();
         showdate();
         rightmouse();
@@ -218,6 +218,28 @@ public class home extends javax.swing.JFrame implements MouseListener {
         int numberOfGuests = resultSet.getInt("occupancy_count");
         Color backgroundColor = (numberOfGuests > 0) ? new Color(235, 33, 35) : new Color(34, 139, 34);
         panel.setBackground(backgroundColor);
+
+        // Thêm sự kiện xử lý chuột cho panel
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Khi chuột vào, thực hiện các hành động mong muốn
+                JPanel clickedPanel = (JPanel) e.getSource();
+                JLabel roomNumberLabel = (JLabel) clickedPanel.getComponent(0);
+                String roomNumber = roomNumberLabel.getText();
+                // Hiển thị thông tin phòng hoặc thực hiện các hành động khác
+                txtmp.setText(roomNumber);
+                clickedPanel.setBackground(Color.RED);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Khi chuột ra, trở về màu nền ban đầu
+                JPanel clickedPanel = (JPanel) e.getSource();
+                clickedPanel.setBackground(backgroundColor);
+            }
+        });
+
         return panel;
     }
 
@@ -265,6 +287,31 @@ public class home extends javax.swing.JFrame implements MouseListener {
             Connection connection = connecting.getConnection();
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM room";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                createRoomPanel(resultSet);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        jPanel2.revalidate(); // Cập nhật giao diện sau khi thêm lại các phòng
+        jPanel2.repaint();
+    }
+
+    private void searchRooms(String searchQuery) {
+        jPanel2.removeAll(); // Xóa các phòng hiện tại trên giao diện
+        try {
+            Connection connection = connecting.getConnection();
+            Statement statement = connection.createStatement();
+            String sql;
+
+            sql = "SELECT * FROM room WHERE room_id LIKE '%" + searchQuery + "%' OR room_type LIKE '%" + searchQuery + "%'";
+
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -499,6 +546,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
         lblTime = new javax.swing.JLabel();
         scrollPane1 = new java.awt.ScrollPane();
         jPanel2 = new java.awt.Panel();
+        roomNameTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -1045,11 +1094,26 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jPanel2.setLayout(new java.awt.GridLayout(7, 5, 4, 4));
         scrollPane1.add(jPanel2);
 
+        roomNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                roomNameTextFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Tìm kiếm phòng:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(roomNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(851, 851, 851))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(scrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE))
         );
@@ -1058,11 +1122,15 @@ public class home extends javax.swing.JFrame implements MouseListener {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(591, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(roomNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(551, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 77, Short.MAX_VALUE)
-                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(0, 130, Short.MAX_VALUE)
+                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -1415,6 +1483,11 @@ public class home extends javax.swing.JFrame implements MouseListener {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void roomNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roomNameTextFieldKeyReleased
+        String roomNameQuery = roomNameTextField.getText(); // Lấy giá trị từ trường văn bản nhập tên phòng
+        searchRooms(roomNameQuery); // Gọi hàm searchRooms với tên phòng và loại phòng tương ứng
+    }//GEN-LAST:event_roomNameTextFieldKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -1504,6 +1577,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel6;
@@ -1563,6 +1637,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel lbtDate;
     private javax.swing.JTextPane lydo;
     private javax.swing.JTextPane lydo1;
+    private javax.swing.JTextField roomNameTextField;
     private java.awt.ScrollPane scrollPane1;
     private javax.swing.JTextField txtcmnd;
     private javax.swing.JTextField txthoten;
