@@ -9,6 +9,8 @@ import pxu.com.dialogchek.messageher;
 import pxu.com.dialogchek.showuser;
 import pxu.com.dao.UserDao;
 import pxu.com.model.UserModel;
+import java.util.Properties;
+
 
 /**
  *
@@ -108,6 +110,7 @@ public class login extends javax.swing.JFrame {
                 home h = new home();
                 h.setVisible(true);
                 this.dispose();
+               Properties p = new Properties();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -32,9 +33,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -63,7 +77,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     public home() throws SQLException {
         initComponents();
         taophong();
-        pro();
+//        pro();
         showTime();
         showdate();
         rightmouse();
@@ -78,10 +92,10 @@ public class home extends javax.swing.JFrame implements MouseListener {
         if (showuser.nguoiDangNhap.getPosition().equals("Quản lý")) {
 
         } else if (showuser.nguoiDangNhap.getPosition().equals("Nhân viên")) {
-            jButton1.setEnabled(false);
-            jButton2.setEnabled(false);
-            jButton3.setEnabled(false);
-            jButton7.setEnabled(false);
+//            jButton1.setEnabled(false);
+//            jButton2.setEnabled(false);
+//            jButton3.setEnabled(false);
+//            jButton7.setEnabled(false);
         }
     }
 
@@ -218,6 +232,28 @@ public class home extends javax.swing.JFrame implements MouseListener {
         int numberOfGuests = resultSet.getInt("occupancy_count");
         Color backgroundColor = (numberOfGuests > 0) ? new Color(235, 33, 35) : new Color(34, 139, 34);
         panel.setBackground(backgroundColor);
+
+        // Thêm sự kiện xử lý chuột cho panel
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Khi chuột vào, thực hiện các hành động mong muốn
+                JPanel clickedPanel = (JPanel) e.getSource();
+                JLabel roomNumberLabel = (JLabel) clickedPanel.getComponent(0);
+                String roomNumber = roomNumberLabel.getText();
+                // Hiển thị thông tin phòng hoặc thực hiện các hành động khác
+                txtmp.setText(roomNumber);
+                clickedPanel.setBackground(Color.RED);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Khi chuột ra, trở về màu nền ban đầu
+                JPanel clickedPanel = (JPanel) e.getSource();
+                clickedPanel.setBackground(backgroundColor);
+            }
+        });
+
         return panel;
     }
 
@@ -232,6 +268,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
             JLabel label2 = createLabel("Số người: " + String.valueOf(songuoi));
             JLabel label3 = createLabel("Loại phòng: " + String.valueOf(loaiphong));
             JLabel label4 = createLabel("Số giường: " + String.valueOf(songiuong));
+            // nút nhận sự kiện
             panel.addMouseListener(this);
 
             panel.add(label1);
@@ -265,6 +302,31 @@ public class home extends javax.swing.JFrame implements MouseListener {
             Connection connection = connecting.getConnection();
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM room";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                createRoomPanel(resultSet);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        jPanel2.revalidate(); // Cập nhật giao diện sau khi thêm lại các phòng
+        jPanel2.repaint();
+    }
+
+    private void searchRooms(String searchQuery) {
+        jPanel2.removeAll(); // Xóa các phòng hiện tại trên giao diện
+        try {
+            Connection connection = connecting.getConnection();
+            Statement statement = connection.createStatement();
+            String sql;
+
+            sql = "SELECT * FROM room WHERE room_id LIKE '%" + searchQuery + "%' OR room_type LIKE '%" + searchQuery + "%'";
+
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -433,7 +495,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jLabel15 = new javax.swing.JLabel();
         comgioitinh = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
-        txtcmnd = new javax.swing.JTextField();
+        txtgmail = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         datengayvao = new com.toedter.calendar.JDateChooser();
         jFrame3 = new javax.swing.JFrame();
@@ -470,9 +532,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jButton14 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton2 = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        jButton1 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         jButton3 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
@@ -499,6 +561,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
         lblTime = new javax.swing.JLabel();
         scrollPane1 = new java.awt.ScrollPane();
         jPanel2 = new java.awt.Panel();
+        roomNameTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -689,9 +753,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jPanel27.add(comgioitinh);
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel14.setText("CMND:");
+        jLabel14.setText("Gmail:");
         jPanel27.add(jLabel14);
-        jPanel27.add(txtcmnd);
+        jPanel27.add(txtgmail);
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setText("Ngày vào:");
@@ -931,64 +995,52 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/kytucxa.png"))); // NOI18N
-        jButton1.setText("Phòng");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jToolBar1.add(jButton1);
+        jButton2.setText("jButton2");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator2);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/sinhivnektx.png"))); // NOI18N
-        jButton2.setText("Sinh viên");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jToolBar1.add(jButton2);
+        jButton1.setText("jButton1");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator3);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/kyluiat.png"))); // NOI18N
-        jButton3.setText("Kỷ luật");
+        jButton3.setText("jButton3");
         jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
         jToolBar1.add(jSeparator4);
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/nhaxe.png"))); // NOI18N
-        jButton4.setText("Nhà xe");
+        jButton4.setText("jButton4");
         jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator5);
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/taikhoan.png"))); // NOI18N
-        jButton5.setText("Tài khoản");
+        jButton5.setText("jButton5");
         jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton5);
         jToolBar1.add(jSeparator7);
 
-        jButton6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/hoadon.png"))); // NOI18N
-        jButton6.setText("Hoá đơn");
+        jButton6.setText("jButton6");
         jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton6);
         jToolBar1.add(jSeparator8);
 
-        jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/thongke.png"))); // NOI18N
-        jButton7.setText("Thống kê");
+        jButton7.setText("jButton7");
         jButton7.setFocusable(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton7);
         jToolBar1.add(jSeparator9);
 
@@ -1040,11 +1092,26 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jPanel2.setLayout(new java.awt.GridLayout(7, 5, 4, 4));
         scrollPane1.add(jPanel2);
 
+        roomNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                roomNameTextFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Tìm kiếm phòng:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(roomNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(851, 851, 851))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(scrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE))
         );
@@ -1053,11 +1120,15 @@ public class home extends javax.swing.JFrame implements MouseListener {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(591, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(roomNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(551, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 77, Short.MAX_VALUE)
-                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(0, 130, Short.MAX_VALUE)
+                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -1261,6 +1332,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         }
         return true;
     }
+
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         if (checkmasv()) {
             if (chek()) {
@@ -1279,7 +1351,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
                     SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
                     String ngaysinh = date.format(datengaysinh.getDate());
                     s.setBirth_date(Date.valueOf(ngaysinh));
-                    s.setId_card(txtcmnd.getText());
+                    s.setGmail(txtgmail.getText());
                     s.setPhone_number(txtsdt.getText());
                     s.setGender(comgioitinh.getSelectedItem().toString());
                     s.setHometown(txtquequan.getText());
@@ -1318,6 +1390,53 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 }
             }
         }
+        try {
+            ArrayList<String> list = new ArrayList<>();
+            list.add(txtgmail.getText());
+            for (int i = 0; i < list.size(); i++) {
+
+                Properties p = new Properties();
+                p.put("mail.smtp.auth", "true");
+                p.put("mail.smtp.starttls.enable", "true");
+                p.put("mail.smtp.host", "smtp.gmail.com");
+                p.put("mail.smtp.port", "587");
+
+                Session session = Session.getInstance(p, new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("vvc132003@gmail.com", "mwvfwkbyknepohte");
+                    }
+                });
+
+                String from = "vvc132003@gmail.com"; // Replace with the sender's email address
+                String tos = list.get(i).toString();
+                String subj = "Gửi đến bạn";
+                SimpleDateFormat date = new SimpleDateFormat("yyy-MM-dd");
+                String ngayvao = date.format(datengayvao.getDate());
+                String body = "Mã SV: " + txtmasv.getText()
+                        + "\nTên: " + txthoten.getText()
+                        + "\nNgày vào: " + ngayvao
+                        + "\nKhoa: " + combokhoa.getSelectedItem().toString()
+                        + "\nNgành: " + combonganh.getSelectedItem().toString()
+                        + "\nĐịa chỉ: " + txtquequan.getText()
+                        + "\nGiới tính: " + comgioitinh.getSelectedItem().toString()
+                        + "\nSĐT: " + txtsdt.getText()
+                        + "\nSố phòng bạn thuê: " + txtmp.getText();
+                Message msg = new MimeMessage(session);
+                msg.setFrom(new InternetAddress(from));
+                msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(tos));
+                msg.setSubject(subj);
+                msg.setText(body);
+
+                try (Transport transport = session.getTransport("smtp")) {
+                    transport.connect("smtp.gmail.com", "vvc132003@gmail.com", "qyqgwwjbbajzrrex");
+                    transport.sendMessage(msg, msg.getAllRecipients());
+                }
+                System.out.println("Email sent successfully to: " + tos);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         jFrame1.dispose();
 
     }//GEN-LAST:event_jButton12ActionPerformed
@@ -1358,17 +1477,6 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jFrame1.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            violation h = new violation();
-            h.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         try {
             RoomModel p = new RoomModel();
@@ -1398,6 +1506,11 @@ public class home extends javax.swing.JFrame implements MouseListener {
         }
         jFrame5.dispose();
     }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void roomNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roomNameTextFieldKeyReleased
+        String roomNameQuery = roomNameTextField.getText(); // Lấy giá trị từ trường văn bản nhập tên phòng
+        searchRooms(roomNameQuery); // Gọi hàm searchRooms với tên phòng và loại phòng tương ứng
+    }//GEN-LAST:event_roomNameTextFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -1488,6 +1601,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel6;
@@ -1547,8 +1661,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel lbtDate;
     private javax.swing.JTextPane lydo;
     private javax.swing.JTextPane lydo1;
+    private javax.swing.JTextField roomNameTextField;
     private java.awt.ScrollPane scrollPane1;
-    private javax.swing.JTextField txtcmnd;
+    private javax.swing.JTextField txtgmail;
     private javax.swing.JTextField txthoten;
     private javax.swing.JLabel txtmand;
     private javax.swing.JTextField txtmaphong;
